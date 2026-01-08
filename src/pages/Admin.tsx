@@ -2,7 +2,7 @@
 import { useState, useRef, useEffect } from 'react';
 import { useProducts } from '../context/ProductContext';
 import type { Product } from '../data/products';
-import { Trash2, Edit, Plus, Image as ImageIcon, X, Check, Loader2, Settings } from 'lucide-react';
+import { Trash2, Edit, Plus, X, Check, Loader2, Settings } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { uploadProductImage } from '../lib/productService';
 import { fetchCategories } from '../lib/categoryService';
