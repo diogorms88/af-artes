@@ -2,15 +2,26 @@ import { useParams, Link } from 'react-router-dom';
 import { ArrowLeft, MessageCircle } from 'lucide-react';
 import { useProducts } from '../context/ProductContext';
 import { motion } from 'framer-motion';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { fetchSettings } from '../lib/settingsService';
+import type { SiteSettings } from '../lib/settingsService';
 
 const Product = () => {
     const { id } = useParams();
     const { getProduct } = useProducts();
     const product = getProduct(Number(id));
+    const [settings, setSettings] = useState<SiteSettings | null>(null);
 
     // Estado para controlar qual imagem está sendo exibida
     const [selectedImageIndex, setSelectedImageIndex] = useState(0);
+
+    useEffect(() => {
+        const loadSettings = async () => {
+            const data = await fetchSettings();
+            setSettings(data);
+        };
+        loadSettings();
+    }, []);
 
     if (!product) {
         return (
@@ -25,8 +36,9 @@ const Product = () => {
     const images = product.images && product.images.length > 0 ? product.images : [product.image];
     const currentImage = images[selectedImageIndex];
 
+    const whatsappNumber = settings?.whatsapp_number || '5511000000000';
     const whatsappMessage = encodeURIComponent(`Olá, gostaria de saber mais sobre a peça: ${product.name}`);
-    const whatsappLink = `https://wa.me/5511999999999?text=${whatsappMessage}`; // Replace 5511999999999 with real number if available
+    const whatsappLink = `https://wa.me/${whatsappNumber}?text=${whatsappMessage}`;
 
     return (
         <motion.div
