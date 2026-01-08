@@ -1,0 +1,29 @@
+@import url('https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  /* Keeping variables for inline styles fallback, but Tailwind classes will override/use theme */
+  --color-bg: #F9F7F2;
+  --color-text: #1A1A1A;
+  --color-accent: #C5A028;
+  --color-secondary: #8C8C8C;
+  --color-surface: #FFFFFF;
+  --font-heading: 'Playfair Display', serif;
+  --font-body: 'Lato', sans-serif;
+}
+
+body {
+  @apply bg-bg text-text font-sans antialiased;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  @apply font-serif;
+}

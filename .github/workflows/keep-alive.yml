@@ -1,0 +1,26 @@
+name: Supabase Keep Alive
+
+on:
+  schedule:
+    # Roda todo dia às 08:00 (horário de Brasilia aprox, 11:00 UTC)
+    - cron: '0 11 * * *'
+  workflow_dispatch: # Permite rodar manualmente se quiser testar
+
+jobs:
+  ping-supabase:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Ping Supabase Database
+        env:
+          SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL }}
+          SUPABASE_KEY: ${{ secrets.VITE_SUPABASE_ANON_KEY }}
+        run: |
+          echo "Pinging Supabase to prevent project pausing..."
+          response=$(curl -s -o /dev/null -w "%{http_code}" -H "apikey: $SUPABASE_KEY" -H "Authorization: Bearer $SUPABASE_KEY" "$SUPABASE_URL/rest/v1/site_settings?select=id&limit=1")
+          
+          if [ "$response" -eq 200 ]; then
+            echo "✅ Success! Supabase is active. Response code: $response"
+          else
+            echo "❌ Failed to ping Supabase. Response code: $response"
+            exit 1
+          fi
